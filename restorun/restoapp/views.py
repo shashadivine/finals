@@ -19,12 +19,23 @@ def add_item(request):
         # Retrieve form data
         name = request.POST.get('name')
         sku = request.POST.get('sku')  # Use the pre-filled SKU from the form
-        cost = float(request.POST.get('cost'))
+        cost_amount = request.POST.get('cost')
         quantity = int(request.POST.get('quantity'))
         expiry_date = datetime.strptime(request.POST.get('expiry_date'), '%Y-%m-%d').date()
         purchase_date = datetime.strptime(request.POST.get('purchase_date'), '%Y-%m-%d').date()
         supplier = request.POST.get('supplier')
         category = request.POST.get('category')
+
+        # Check for valid cost input
+        try:
+            cost = float(cost_amount)
+            if cost < 0:
+                raise ValueError("Cost can't be negative.")
+        except ValueError as a:
+            if 'could not convert string to float' in str(a):
+                error_message = "Cost must be a valid number."
+            else:
+                error_message = str(a)
 
         # Check if a custom category was entered
         new_category = request.POST.get('new_category')
