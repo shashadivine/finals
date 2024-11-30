@@ -1,14 +1,32 @@
 from django.db import models
 
-class Item(models.Model):
-    sku = models.CharField(max_length=100, unique=True)
-    name = models.CharField(max_length=100)
-    cost = models.DecimalField(max_digits=10, decimal_places=2)
-    quantity = models.IntegerField()
-    expiry_date = models.DateField()
-    purchase_date = models.DateField()
-    supplier = models.CharField(max_length=100)
-    category = models.CharField(max_length=100)
+class Item:
+    def __init__(self, sku, name, cost, quantity, expiry_date, purchase_date, supplier, category):
+        self.sku = sku
+        self.name = name
+        self.cost = cost
+        self.quantity = quantity
+        self.expiry_date = expiry_date
+        self.purchase_date = purchase_date
+        self.supplier = supplier
+        self.category = category
 
-    def __str__(self):
-        return self.name
+class Inventory:
+    def __init__(self):
+        self.items = {}  # Use a dictionary to store items by name
+
+    def add_item(self, item):
+        if item.name in self.items:
+            raise ValueError(f"Item '{item.name}' already exists in inventory.")
+        self.items[item.name] = item
+
+    def delete_item(self, item_name):
+        if item_name in self.items:
+            del self.items[item_name]
+        else:
+            raise ValueError(f"Item '{item_name}' does not exist in inventory.")
+
+    def get_all_items(self):
+        return list(self.items.values())  # Return all items as a list
+    
+inventory = Inventory()

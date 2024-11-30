@@ -1,4 +1,4 @@
-from .models import Item
+from .models import inventory
 
 def merge_sort(items, attribute):
     if len(items) <= 1:
@@ -24,7 +24,8 @@ def merge(left, right, attribute):
     return merged
 
 def search_item(attribute_value, attribute_name):
-    items = list(Item.objects.all())
+    # Fetch items from inventory, not using a db
+    items = inventory.get_all_items()
     sorted_items = merge_sort(items, attribute_name)
     return binary_search(sorted_items, attribute_value, attribute_name)
 
