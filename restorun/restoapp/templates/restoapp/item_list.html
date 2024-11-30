@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="container">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>SKU</th>
+          <th>Name</th>
+          <th>Cost</th>
+          <th>Quantity</th>
+          <th>Expiry Date</th>
+          <th>Purchase Date</th>
+          <th>Supplier</th>
+          <th>Category</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in items %}
+        <tr>
+            <td>{{ item.sku }}</td>
+            <td>{{ item.name }}</td>
+            <td>{{ item.cost }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.expiry_date }}</td>
+            <td>{{ item.purchase_date }}</td>
+            <td>{{ item.supplier }}</td>
+            <td>{{ item.category }}</td>
+            <td>
+                <a href="{% url 'delete_item' item.id %}" class="btn btn-danger">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+{% endblock %}
