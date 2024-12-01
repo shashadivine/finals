@@ -2,8 +2,10 @@
 
 {% block content %}
 <div class="container mt-4">
+    {% if query and attribute %}
+        <h2>Search Results for "{{ query }}" in "{{ attribute|title }}"</h2>
+    {% endif %}
     {% if items %}
-        <h2>Search Results</h2>
         <table class="table table-striped">
             <thead>
                 <tr>

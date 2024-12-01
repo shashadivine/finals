@@ -31,20 +31,25 @@
           <a href="{% url 'add_item' %}" class="btn btn-primary my-2 my-sm-0 mr-2" type="button">Add Item</a>
           <div class="btn-group">
             <button
-              type="button"
-              class="btn btn-secondary dropdown-toggle"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false">
-              Sort by
+                type="button"
+                class="btn btn-secondary dropdown-toggle"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false">
+                Sort by
             </button>
             <div class="dropdown-menu">
-              <a class="dropdown-item" href="#">Name</a>
-              <a class="dropdown-item" href="#">Category</a>
-              <a class="dropdown-item" href="#">Quantity</a>
-              <a class="dropdown-item" href="#">SKU</a>
+                <a class="dropdown-item {% if sort_by == 'sku' %}active{% endif %}" href="{% url 'list_items' %}?sort=sku">SKU</a>
+                <a class="dropdown-item {% if sort_by == 'name' %}active{% endif %}" href="{% url 'list_items' %}?sort=name">Name</a>
+                <a class="dropdown-item {% if sort_by == 'cost' %}active{% endif %}" href="{% url 'list_items' %}?sort=cost">Cost</a>
+                <a class="dropdown-item {% if sort_by == 'quantity' %}active{% endif %}" href="{% url 'list_items' %}?sort=quantity">Quantity</a>
+                <a class="dropdown-item {% if sort_by == 'expiry_date' %}active{% endif %}" href="{% url 'list_items' %}?sort=expiry_date">Expiry Date</a>
+                <a class="dropdown-item {% if sort_by == 'purchase_date' %}active{% endif %}" href="{% url 'list_items' %}?sort=purchase_date">Purchase Date</a>
+                <a class="dropdown-item {% if sort_by == 'supplier' %}active{% endif %}" href="{% url 'list_items' %}?sort=supplier">Supplier</a>
+                <a class="dropdown-item {% if sort_by == 'category' %}active{% endif %}" href="{% url 'list_items' %}?sort=category">Category</a>
             </div>
           </div>
+         
         </div>
 
       <form method="GET" action="{% url 'search_items' %}" class="form-inline my-2 my-lg-0">
@@ -52,11 +57,16 @@
         <select class="form-control mr-2" name="attribute">
             <option value="sku">SKU</option>
             <option value="name">Name</option>
-            <option value="category">Category</option>
+            <option value="cost">Cost</option>
             <option value="quantity">Quantity</option>
+            <option value="expiry_date">Expiry Date</option>
+            <option value="purchase_date">Purchase Date</option>
+            <option value="supplier">Supplier</option>
+            <option value="category">Category</option>
         </select>
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
       </form>
+      
       
     </div>
   </nav>

@@ -1,4 +1,5 @@
 from .models import inventory
+from datetime import datetime
 
 def merge_sort(items, attribute):
     if len(items) <= 1:
@@ -11,10 +12,23 @@ def merge_sort(items, attribute):
     return merge(left, right, attribute)
 
 def merge(left, right, attribute):
+    print(f"Sorting by {attribute}:")
+    print(f"Left: {[getattr(item, attribute) for item in left]}")
+    print(f"Right: {[getattr(item, attribute) for item in right]}")
     merged = []
 
     while left and right:
-        if getattr(left[0], attribute) <= getattr(right[0], attribute):
+        # Handle date comparisons
+        left_value = getattr(left[0], attribute)
+        right_value = getattr(right[0], attribute)
+
+        # Convert strings to dates if necessary
+        if isinstance(left_value, str) and attribute in ['expiry_date', 'purchase_date']:
+            left_value = datetime.strptime(left_value, '%Y-%m-%d').date()
+        if isinstance(right_value, str) and attribute in ['expiry_date', 'purchase_date']:
+            right_value = datetime.strptime(right_value, '%Y-%m-%d').date()
+
+        if left_value <= right_value:
             merged.append(left.pop(0))
         else:
             merged.append(right.pop(0))
@@ -23,14 +37,16 @@ def merge(left, right, attribute):
     merged.extend(right)
     return merged
 
+
 def search_item(query, attribute):
-    # fetch all items from the inventory
+    # Fetch all items from the inventory
     items = inventory.get_all_items()
-    # filter items based on attribute and query
+    # Filter items based on the attribute and query
     filtered_items = [
         item for item in items if str(getattr(item, attribute, '')).lower() == query.lower()
-    ] # for case sensitive matches
-    return filtered_items  # return all matching items
+    ]
+    return filtered_items  # Return all matching items
+
 
 def binary_search(sorted_items, value, attribute):
     low, high = 0, len(sorted_items) - 1
