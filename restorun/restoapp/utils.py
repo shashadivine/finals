@@ -23,11 +23,14 @@ def merge(left, right, attribute):
     merged.extend(right)
     return merged
 
-def search_item(attribute_value, attribute_name):
-    # Fetch items from inventory, not using a db
+def search_item(query, attribute):
+    # fetch all items from the inventory
     items = inventory.get_all_items()
-    sorted_items = merge_sort(items, attribute_name)
-    return binary_search(sorted_items, attribute_value, attribute_name)
+    # filter items based on attribute and query
+    filtered_items = [
+        item for item in items if str(getattr(item, attribute, '')).lower() == query.lower()
+    ] # for case sensitive matches
+    return filtered_items  # return all matching items
 
 def binary_search(sorted_items, value, attribute):
     low, high = 0, len(sorted_items) - 1

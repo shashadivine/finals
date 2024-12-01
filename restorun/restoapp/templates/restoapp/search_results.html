@@ -2,9 +2,9 @@
 
 {% block content %}
 <div class="container mt-4">
-    {% if item %}
-        <h2>Search Result</h2>
-        <table class="table table-bordered">
+    {% if items %}
+        <h2>Search Results</h2>
+        <table class="table table-striped">
             <thead>
                 <tr>
                     <th>SKU</th>
@@ -15,23 +15,32 @@
                     <th>Purchase Date</th>
                     <th>Supplier</th>
                     <th>Category</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
+                {% for item in items %}
                 <tr>
                     <td>{{ item.sku }}</td>
                     <td>{{ item.name }}</td>
-                    <td>{{ item.cost }}</td>
+                    <td>₱{{ item.cost }}</td>
                     <td>{{ item.quantity }}</td>
                     <td>{{ item.expiry_date }}</td>
                     <td>{{ item.purchase_date }}</td>
                     <td>{{ item.supplier }}</td>
                     <td>{{ item.category }}</td>
+                    <td>
+                        <a href="{% url 'delete_item' item.sku %}" class="btn btn-danger">Delete</a>
+                    </td>
                 </tr>
+                {% endfor %}
             </tbody>
         </table>
     {% else %}
-        <div class="alert alert-danger">{{ error }}</div>
+        <div class="alert alert-danger" role="alert">
+            No items found for your search.
+        </div>
     {% endif %}
+    <a href="{% url 'list_items' %}" class="btn btn-secondary mt-3">Back to Inventory</a>
 </div>
 {% endblock %}

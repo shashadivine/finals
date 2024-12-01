@@ -77,8 +77,24 @@ def delete_item(request, sku):
 # Search for an item
 def search_items(request):
     if request.method == 'GET':
-        query = request.GET.get('query')
-        attribute = request.GET.get('attribute')  # e.g., 'sku', 'name'
-        item = search_item(query, attribute)
-        return render(request, 'restoapp/search_results.html', {'item': item})
-    return render(request, 'restoapp/search.html')
+        query = request.GET.get('query', '').strip()  # Get the search query
+        attribute = request.GET.get('attribute', 'name')  # Default to searching by 'name'
+
+        # If no query is provided, redirect back to the inventory list
+        if not query:
+            return redirect('list_items')
+
+        # Use the updated search_item function
+        matching_items = search_item(query, attribute)
+
+        # Render the new template for search results
+        return render(
+            request,
+            'restoapp/search_results.html',
+            {
+                'items': matching_items,
+                'query': query,
+                'attribute': attribute
+            }
+        )
+
